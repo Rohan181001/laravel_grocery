@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AdminLoginController extends Controller
@@ -19,6 +20,13 @@ class AdminLoginController extends Controller
             'password' => 'required'
         ]);
         if ($validator->passes()) {
+
+            if(Auth::guard('admin')->attempt(['email' => $request->email,'password'=> $request->password], $request->get('remembar'))){
+
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('admin.login')->with('error','Either Email/Password is incorrect');
+            }
 
         } else {
             return redirect()->route('admin.login')
