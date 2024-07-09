@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\TempImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\File;
+use Image;
 
 class CategoryController extends Controller
 {
@@ -37,6 +40,28 @@ class CategoryController extends Controller
         $category->slug = $request->slug;
         $category->status = $request->status;
         $category->save();
+
+        //Save Image Here
+
+        if(!empty($request->image_id)){
+          $tempImage = TempImage::find($request->image_id);
+          $extArray = explode('.',$tempImage->name);
+          $ext = last($extArray);
+
+          $newImageName = $category->id.'.'.$ext;
+          $spath = public_path().'/temp/'.$tempImage->name;
+          $dpath = public_path().'/uploads/category/'.$newImageName;
+          File::copy($spath, $dpath);
+
+          // Generate Image Thumbnail
+          $dpath = public_path().'/uploads/category/thumb/'.$newImageName;
+          $img = Image::make('$spath');
+          $img->resize(450, 600);
+          $img->save($dpath);
+
+          $category->image = $newImageName;
+          $category->save();
+        }
 
         $request->session()->flash('success','Category added successfully');
 
