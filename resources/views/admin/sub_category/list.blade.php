@@ -82,7 +82,7 @@
 										@endif
 									</td>
 									<td>
-										<a href="{{route('categories.edit', $subCategory->id)}}">
+										<a href="{{route('sub-categories.edit', $subCategory->id)}}">
 											<svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
 												viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 												<path
@@ -90,7 +90,7 @@
 												</path>
 											</svg>
 										</a>
-										<a href="#" onclick="deletecategory({{$subCategory->id}})"
+										<a href="#" onclick="deleteSubcategory({{$subCategory->id}})"
 											class="text-danger w-4 h-4 mr-1">
 											<svg wire:loading.remove.delay="" wire:target=""
 												class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -126,8 +126,8 @@
 
 @section('customJs')
 <script>
-	function deletecategory(id) {
-		var url = '{{route("categories.delete", "ID")}}';
+	function deleteSubcategory(id) {
+		var url = '{{route("sub-categories.delete", "ID")}}';
 		var newUrl = url.replace("ID", id)
 
 
@@ -141,11 +141,7 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				},
 				success: function (response) {
-
-					if (response["status"]) {
-
-						window.location.href = "{{route('categories.index')}}";
-					}
+                    window.location.href = "{{route('sub-categories.index')}}";
 				}
 			});
 		}
