@@ -102,7 +102,7 @@
 
 		$(document).ready(function(){
 			$(".summernote").summernote({
-				//height:10;
+				//height:250;
 			});
 		});
 	</script>
