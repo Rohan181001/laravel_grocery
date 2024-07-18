@@ -3,9 +3,7 @@
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\HomeController;
-use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SubCategoryController;
-use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -58,11 +56,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/sub-categories/{subcategory}', [SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
         
         //Product Routes
-        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-        
-
-        Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
+     
 
 
         //temp-images.create
