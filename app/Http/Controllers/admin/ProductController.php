@@ -8,6 +8,7 @@ use App\Models\TempImage;
 use App\Models\ProductImage;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Image;
@@ -211,6 +212,41 @@ class ProductController extends Controller
         'errors' => $validator->errors()
       ]);
     }
+  }
+
+  public function destroy($id, Request $request){
+         $product = Product::find($id);
+
+         if(empty($product)){
+          $request->session()->flash('error','Product not found');
+          return response()->json([
+            'status' => false,
+            'notFound' => true
+          ]);
+         }
+         
+         $ProductImages = ProductImage::where('product_id',$id)->get();
+
+         if(!empty($ProductImages)){
+
+            foreach ($ProductImages as $ProductImage){
+              
+              File::delete(public_path('uploads/product/large/'.$ProductImage->image));
+              File::delete(public_path('uploads/product/small/'.$ProductImage->image));
+
+            }
+
+            ProductImage::where('product_id',$id)->delete();
+         }
+
+        $product->delete();
+
+        $request->session()->flash('success','Product deleted successfully');
+
+        return response()->json([
+          'status' => true,
+          'message' => 'Product deleted successfully' 
+        ]);
   }
 
 }
