@@ -264,7 +264,7 @@
         $.ajax({
             url: '{{route("product-subcategories.index")}}',
             type: 'get',
-            data: {},
+            data: {category_id:category_id},
             dataType: 'json',
             success: function (response) {
                 // console.log(response);
