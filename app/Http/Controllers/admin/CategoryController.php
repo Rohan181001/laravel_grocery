@@ -52,19 +52,19 @@ class CategoryController extends Controller
         $extArray = explode('.', $tempImage->name);
         $ext = last($extArray);
 
-        $newImageName = $category->id . '.' . $ext;
-        $spath = public_path() . '/temp/' . $tempImage->name;
-        $dpath = public_path() . '/uploads/category/' . $newImageName;
+        $newImageName = $category->id.'.'. $ext;
+        $spath = public_path().'/temp/'.$tempImage->name;
+        $dpath = public_path().'/uploads/category/'.$newImageName;
         File::copy($spath, $dpath);
 
         // Generate Image Thumbnail
-        $dpath = public_path() . '/uploads/category/thumb/' . $newImageName;
-        $img = Image::make($spath);
-        //$img->resize(450, 600);
-        $img->fit(450, 600, function ($constraint) {
-          $constraint->upsize();
-        });
-        $img->save($dpath);
+         $dpath = public_path().'/uploads/category/thumb/'.$newImageName;
+         $img = Image::make($spath);
+         $img->resize(450, 600);
+        // $img->fit(450, 600, function ($constraint) {
+        //   $constraint->upsize();
+        // });
+         $img->save($dpath);
 
         $category->image = $newImageName;
 
